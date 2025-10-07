@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klara's Differentiation</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Global Styles & Font Setup (Dark Theme) */
+        :root {
+            /* Keep neutrals, but adapt to dark theme */
+            --color-background: #030712; /* Very Dark Gray */
+            --color-text: #E5E7EB; /* Light Gray */
+            --color-light: #1F2937; /* Darker Card Background */
+            --color-card-bg: #111827; /* Even darker card background */
+            --color-selected-item: #374151; /* Darker gray for selected item/hover */
+
+            /* Neutral/Default Brand Colors (Adapted for Dark BG) */
+            --color-brand-primary: #a855f7; /* Purple */
+            --color-brand-secondary: #6366f1; /* Indigo */
+
+            --font-family: 'Inter', sans-serif;
+            
+            /* Dynamic Theme Variables (will be set by JS/Class) */
+            --color-theme-primary: var(--color-brand-primary);
+            --color-theme-secondary: var(--color-brand-secondary);
+        }
+
+        /* --- Theme Definitions (Violet, Orange, Teak) --- */
+        /* Theme 1: Violet (Dark adapted) */
+        .pillar-theme-1 {
+            --color-theme-primary: #8D6EC8; /* Light Violet */
+            --color-theme-secondary: #5C33A8; /* Deep Violet */
+        }
+        /* Theme 2: Orange/Coral (Dark adapted) */
+        .pillar-theme-2 {
+            --color-theme-primary: #F08C8A; /* Light Orange/Red */
+            --color-theme-secondary: #D9534F; /* Rust/Coral */
+        }
+        /* Theme 3: Teak (Dark adapted) */
+        .pillar-theme-3 {
+            --color-theme-primary: #C7AD8E; /* Light Teak */
+            --color-theme-secondary: #A3835B; /* Teak/Brown */
+        }
+
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--color-background);
+            color: var(--color-text);
+            margin: 0;
+            /* Added padding for fixed header */
+            padding-top: 100px;
+            padding-bottom: 40px; 
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        h1#pageTitle {
+            /* Replaced custom CSS with Tailwind for centering and size */
+            color: var(--color-brand-primary);
+            margin-bottom: 30px;
+            /* Styles applied via Tailwind classes in HTML */
+        }
+        
+        .gradient-text {
+            background: linear-gradient(to right, #a855f7, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+
+        /* --- Combo Box (Custom Dropdown) Styling --- */
+        .select-container {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative; 
+            width: fit-content; 
+            margin-left: auto;
+            margin-right: auto;
+            z-index: 10; /* Ensure dropdown is above content */
+        }
+
+        /* Set the width to match the H1 title */
+        #selectContainer {
+            width: var(--title-width, 400px); 
+            max-width: 100%;
+        }
+
+        /* The custom button */
+        .select-button {
+            background-color: var(--color-light); /* Darker gray background */
+            color: var(--color-text);
+            border: 2px solid var(--color-brand-secondary); /* Primary brand color border */
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 500; 
+            transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            align-items: center;
+            width: 100%; 
+            justify-content: space-between; 
+            box-sizing: border-box; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            user-select: none;
+            text-align: left;
+        }
+
+        .select-button:hover {
+            border-color: var(--color-brand-primary); /* Hover color change */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
+        }
+        
+        /* Dropdown arrow icon */
+        .select-arrow {
+            font-size: 0.7em;
+            margin-left: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .select-container.open .select-arrow {
+            transform: rotate(180deg);
+        }
+
+        /* The Custom Dropdown Menu (The list of options) */
+        #customDropdown {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            position: absolute;
+            top: 100%; 
+            left: 0;
+            width: 100%; 
+            background-color: var(--color-card-bg); /* Very dark background */
+            border: 1px solid var(--color-selected-item);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+            z-index: 20;
+            overflow: hidden;
+            color: var(--color-text);
+            
+            /* Smooth Transition Effect (start collapsed) */
+            max-height: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, visibility 0.3s;
+        }
+
+        .select-container.open #customDropdown {
+            max-height: 300px; 
+            opacity: 1;
+            visibility: visible;
+            overflow-y: auto;
+        }
+
+        .dropdown-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 500;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            text-align: left;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--color-selected-item);
+            color: var(--color-light);
+        }
+        
+        /* Selected item styling */
+        .dropdown-item.selected {
+            background-color: var(--color-brand-secondary); 
+            color: var(--color-light);
+            font-weight: 600;
+        }
+
+        .dropdown-item.selected:hover {
+            background-color: var(--color-brand-secondary); 
+            color: var(--color-light);
+        }
+
+
+        /* --- Main Content Area --- */
+        .content-area {
+            display: grid;
+            gap: 24px; /* Slightly larger gap with Tailwind's feel */
+            transition: opacity 0.4s ease-in-out; 
+            grid-template-columns: 1fr; 
+        }
+
+        /* Card Styles */
+        .card {
+            background-color: var(--color-card-bg); /* Dark background */
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(55, 65, 81, 0.5); /* Subtle border */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        /* Main title for the pillar content */
+        .pillar-main-title h2 {
+            margin-top: 0;
+            font-size: 2.5em;
+            font-weight: 800;
+            color: var(--color-theme-primary); /* Uses Theme Primary Color */
+            border-bottom: 3px solid var(--color-theme-secondary); /* Uses Theme Secondary Color */
+            padding-bottom: 12px;
+            margin-bottom: 8px;
+        }
+
+        /* Sub-sections within the pillar */
+        .pillar-section-card h3 {
+            margin-top: 0;
+            font-size: 1.75em;
+            font-weight: 700;
+            color: var(--color-theme-primary); /* Uses Theme Primary Color */
+            border-bottom: 2px solid var(--color-theme-secondary); /* Uses Theme Secondary Color */
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .card p, .card ul {
+            margin-bottom: 15px;
+            text-align: left;
+            color: #D1D5DB; /* Lighter text for content */
+        }
+        
+        /* Ensure paragraph breaks in content */
+        .pillar-section-card p + p {
+            margin-top: 1em;
+        }
+
+        .card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .card ul li {
+            position: relative;
+            padding-left: 28px;
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+
+        /* Custom Bullet Point Styling */
+        .card ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--color-theme-secondary); /* Uses Theme Secondary Color */
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        
+        /* --- Image Styling --- */
+        .pillar-image-container {
+            text-align: center;
+            margin-bottom: 0px;
+            padding: 0;
+            background-color: transparent;
+            border-radius: 12px;
+            box-shadow: none;
+        }
+
+        .pillar-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .pillar-main-title p {
+            font-size: 1.25em;
+            font-weight: 500;
+            color: #9CA3AF; /* Gray text for subtitle */
+            margin-top: 0;
+        }
+
+        /* Mobile menu link styles */
+        #mobileMenu a {
+            border-radius: 0.5rem;
+            margin: 0.25rem 1rem;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 900px) {
+            #selectContainer {
+                width: 90%; 
+            }
+            h1#pageTitle {
+                font-size: 2.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Header (Fixed and Dark) -->
+    <header class="fixed top-0 left-0 w-full z-30 bg-gray-900/95 backdrop-blur-md shadow-lg border-b border-gray-700">
+        <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <a href="index.html" class="text-2xl font-extrabold tracking-tight gradient-text mr-auto">Klara</a>
+            <div class="hidden lg:flex flex-1 justify-end">
+                <div class="flex items-center space-x-6">
+                    <a href="index.html#features" class="text-gray-300 hover:text-purple-400 transition duration-150">Features</a>
+                    <a href="index.html#for-who" class="text-gray-300 hover:text-purple-400 transition duration-150">For Who?</a>
+                    <a href="index.html#advantage" class="text-gray-300 hover:text-purple-400 transition duration-150">Advantage</a>
+                    <a href="pricing.html" class="text-gray-300 hover:text-purple-400 transition duration-150">Pricing</a>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4 ml-8">
+                <a href="https://klara.augometa.com" class="hidden lg:inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-full transition duration-150 shadow-md shadow-indigo-500/50">
+                    Get Started
+                </a>
+                <div class="lg:hidden">
+                    <button id="mobileMenuButton" class="text-gray-300 focus:outline-none p-2 rounded-lg hover:bg-gray-800">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobileMenu" class="hidden lg:hidden w-full bg-gray-900 border-t border-gray-700 pb-4">
+            <a href="index.html" class="block px-8 py-2 text-gray-300 hover:bg-gray-800 transition duration-150">Features</a>
+            <a href="index.html" class="block px-8 py-2 text-gray-300 hover:bg-gray-800 transition duration-150">For Who?</a>
+            <a href="differentiations.html" class="block px-8 py-2 text-purple-400 bg-gray-800 font-semibold">Advantage</a> <!-- Only on this page -->
+            <a href="pricing.html" class="block px-8 py-2 text-gray-300 hover:bg-gray-800 transition duration-150">Pricing</a>
+            <a href="#" class="block px-8 py-2 mt-2 mx-4 text-white bg-indigo-600 hover:bg-indigo-700 rounded-full text-center">Get Started</a>
+            <a href="https://klara.augometa.com" class="block px-8 py-2 mt-2 mx-4 text-white bg-indigo-600 hover:bg-indigo-700 rounded-full text-center">
+                Get Started
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        
+        <h1 id="pageTitle" class="text-3xl md:text-5xl font-extrabold tracking-tight mb-8 text-center">
+            <!-- Renamed page title to reflect new navigation label (Advantage) while keeping Klara's Differentiation theme -->
+            <span class="gradient-text">Klara's Key Advantage</span>
+        </h1>
+
+        <div id="selectContainer" class="select-container">
+            
+            <!-- Custom Button -->
+            <button id="selectButton" class="select-button" aria-expanded="false">
+                <span id="selectedPillarText">Select a Pillar...</span> <span class="select-arrow">▼</span>
+            </button>
+
+            <!-- Custom Dropdown List -->
+            <ul id="customDropdown">
+                <!-- Options will be populated by JavaScript -->
+            </ul>
+        </div>
+
+        <div id="contentArea" class="content-area">
+            <!-- Content will be injected here -->
+        </div>
+    </div>
+
+    <script>
+        // Data Structure for the content (Pillars) - **KEPT INTACT**
+        const pillarData = [
+            {
+                title: "Specialised Intelligence",
+                subtitle: "Precision, Preference, and Multi-Model Power",
+                image: "1.jpeg",
+                sections: [
+                    {
+                        heading: "User-Driven AI Model Choice and Fusion",
+                        body: `Klara is built on an unparalleled foundation of general intelligence, allowing users to harness and even combine the power of multiple world-class advanced AI models, which is then refined into a deep domain expert. Klara is designed for maximum performance and user preference, not vendor lock-in. We offer control over the AI engine to meet specific needs for style, speed, and accuracy.`,
+                        list: [
+                            "<strong>Preference-Based AI Model Selection:</strong> You are not limited to a single engine. Klara allows you to select from multiple world-leading AI Models. This ensures you can align the output with the specific style, tone, and reasoning approach you or your clients prefer (e.g., favouring the creative style of one model or the structured reasoning of another).",
+                            "<strong>Uni & Multi-Model Responses:</strong> For complex or high-stakes tasks, leverage the unique strengths of different models simultaneously. You can use a single, high-performing model (Uni-Model) or fuse the distinct outputs of two or more AI Models (Multi-Model) to construct the most nuanced, accurate, and comprehensive response available."
+                        ]
+                    },
+                    {
+                        heading: "Maximum Context and Real-Time Relevance",
+                        body: `Klara ensures your insights are always up-to-date and contextually appropriate for the task at hand.`,
+                        list: [
+                            "<strong>Grounded & Ungrounded Flexibility:</strong> Choose to ground the model strictly in your company's secure data (Klara's Knowledge Hub) for internal consistency, or utilise the model's vast external training for creative, general-purpose tasks (Ungrounded).",
+                            "<strong>Current Web Context:</strong> Infuse the most current, real-time information by enabling the latest web search results. This ensures the response is both accurate to your internal data and relevant to the external world, critical for roles requiring up-to-the-minute market or competitive data."
+                        ]
+                    }
+                ]
+            },
+            {
+                title: "Dynamic Knowledge System",
+                subtitle: "Secure, Self-Improving, and Fluid Deployment",
+                image: "2.jpeg",
+                sections: [
+                    {
+                        heading: "The Living Knowledge Loop with Individual Control",
+                        body: `Klara is engineered to turn individual and collective insights into a living, dynamic asset that can be securely shared, instantly deployed, and is constantly improving, all within a focused structure. Klara is a self-improving ecosystem that grows smarter with every contribution and query, but with safeguards for data integrity.`,
+                        list: [
+                            "<strong>Compounding Value:</strong> Individual contributions (new documents, refined answers) are instantly absorbed, transforming individual expertise into a collective asset. This ensures all users leverage a continuously evolving, higher-quality intelligence base.",
+                            "<strong>Focused Refinement:</strong> The system is engineered to capture user feedback (likes and dislikes) to refine the quality, context, and relevance of its answers. Importantly, these refinement signals are contained. Likes/dislikes are private and only influence the individual user's experience. Only the Knowledge Hub Owner's refinements are visible and influence the shared intelligence, ensuring no \"free-for-all\" degradation of the core data."
+                        ]
+                    },
+                    {
+                        heading: "Seamless Sharing & Boundary-less Deployment",
+                        body: `Klara facilitates the effortless flow of intelligence across any boundary, managed with simplicity and precision.`,
+                        list: [
+                            "<strong>Granular Knowledge Sharing:</strong> Users can securely share and collaborate on knowledge assets with precision. Permissions can be managed at the individual, team, or public level, allowing a consultant to manage a personal vault or an entire organization to manage sensitive internal documents.",
+                            "<strong>Boundary-less Deployment:</strong> Externalise your specialised intelligence via a Customisable Low-Code Widget. Deploy a custom, intelligent self-service assistant directly into your website or customer portals, grounded securely in your data. This elevates the user journey and drives significant ticket deflection."
+                        ]
+                    }
+                ]
+            },
+            {
+                title: "Value-Aligned Pricing",
+                subtitle: "Flexible Pricing for Every User",
+                image: "3.jpeg",
+                sections: [
+                    {
+                        heading: "Pay-For-Value, Not Headcount or Access",
+                        body: `The standard "per-seat" licensing model creates significant cost inefficiencies and limits adoption, penalising both large enterprises and individual professionals. Klara replaces this with a transparent, scalable approach that aligns investment directly with value consumed. We utilise a true consumption-based model to eliminate the inefficiencies of per-user licensing, ensuring affordability and accessibility for everyone.`,
+                        list: [
+                            "<strong>Zero Friction Adoption for All:</strong> Whether you are an individual knowledge professional or a large enterprise, you can grant access to every single team member without incurring an immediate, prohibitive per-user cost. This removes the financial barrier to adoption for all user types.",
+                            "<strong>Direct Cost Alignment:</strong> Your investment is tied directly to your actual usage (queries processed, value consumed), not the number of accounts on your roster. This guarantees you only pay for the intelligence you utilise."
+                        ]
+                    },
+                    {
+                        heading: "A Model Built for Predictability, Scale, and the Solo Professional",
+                        body: `This innovative approach ensures that the power of world-leading, specialised AI is cost-effective and accessible for everyone, from a consultant to a large corporation.`,
+                        list: [
+                            "<strong>Budget Alignment and Control:</strong> Klara allows organisations and individuals to set guaranteed custom monthly budget caps and usage alerts. This provides the cost benefits of Pay-As-You-Go pricing while ensuring that spending remains fully forecastable and under control, eliminating budget surprises.",
+                            "<strong>Empowering the Individual:</strong> For the solo knowledge professional, this model ensures they can access enterprise-grade intelligence without the crippling commitment of a standard enterprise seat fee, making powerful specialisation available to teams of any size."
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        const contentArea = document.getElementById('contentArea');
+        const selectButton = document.getElementById('selectButton');
+        const selectedPillarText = document.getElementById('selectedPillarText');
+        const customDropdown = document.getElementById('customDropdown');
+        const selectContainer = document.getElementById('selectContainer');
+        const pageTitle = document.getElementById('pageTitle');
+        let selectedIndex = 0; 
+
+        // 1. Populate the custom dropdown list
+        function populateDropdown() {
+            customDropdown.innerHTML = '';
+            pillarData.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.classList.add('dropdown-item');
+                // Use the descriptive title for the dropdown text
+                li.textContent = item.title; 
+                li.dataset.index = index;
+                li.tabIndex = 0; 
+                
+                li.addEventListener('click', () => {
+                    selectPillar(index);
+                    selectContainer.classList.remove('open');
+                });
+                
+                li.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        selectPillar(index);
+                        selectContainer.classList.remove('open');
+                        selectButton.focus();
+                    }
+                });
+
+                customDropdown.appendChild(li);
+            });
+        }
+
+        // 2. Select a pillar and update content
+        function selectPillar(index) {
+            selectedIndex = index;
+            renderContent(index);
+            updateSelectedStyle(index);
+        }
+
+        // 3. Update the visual style of the selected item in the dropdown list
+        function updateSelectedStyle(index) {
+            document.querySelectorAll('.dropdown-item').forEach(item => {
+                item.classList.remove('selected');
+            });
+            const selectedItem = document.querySelector(`.dropdown-item[data-index="${index}"]`);
+            if (selectedItem) {
+                selectedItem.classList.add('selected');
+            }
+        }
+
+        // 4. Render the content for a selected pillar
+        function renderContent(index) {
+            const data = pillarData[index];
+            
+            // Determine theme class (1, 2, or 3)
+            const themeClass = `pillar-theme-${(index % 3) + 1}`;
+            
+            // Apply theme class to the content area
+            contentArea.classList.remove('pillar-theme-1', 'pillar-theme-2', 'pillar-theme-3');
+            contentArea.classList.add(themeClass);
+            
+            contentArea.style.opacity = 0;
+
+            setTimeout(() => {
+                if (!data) return;
+
+                selectedPillarText.textContent = data.title;
+
+                // Image HTML (placed directly after the main content card)
+                const imageHTML = `
+                    <div class="pillar-image-container">
+                        <img src="${data.image}" alt="Image representing ${data.title}" class="pillar-image" onerror="this.onerror=null; this.src='https://placehold.co/800x200/cccccc/333333?text=Image+${index+1}+Missing'">
+                    </div>
+                `;
+
+                // Main Title Card
+                const mainTitleHTML = `
+                    <div class="card pillar-main-title">
+                        <h2>${data.title}</h2>
+                        <p>${data.subtitle}</p>
+                    </div>
+                `;
+
+                // Section Content
+                let sectionsHTML = '';
+                data.sections.forEach(section => {
+                    // Create list HTML
+                    let listHTML = section.list ? section.list.map(item => `<li>${item}</li>`).join('') : '';
+                    if (listHTML) listHTML = `<ul>${listHTML}</ul>`;
+
+                    sectionsHTML += `
+                        <div class="card pillar-section-card">
+                            <h3>${section.heading}</h3>
+                            <p>${section.body}</p>
+                            ${listHTML}
+                        </div>
+                    `;
+                });
+
+                // Render content: Main Title -> Image -> Sections
+                contentArea.innerHTML = `
+                    ${mainTitleHTML}
+                    ${imageHTML}
+                    ${sectionsHTML}
+                `;
+
+                contentArea.style.opacity = 1;
+
+            }, 400); 
+        }
+
+        // 5. Toggle dropdown visibility
+        selectButton.addEventListener('click', () => {
+             selectContainer.classList.toggle('open');
+             selectButton.setAttribute('aria-expanded', selectContainer.classList.contains('open'));
+
+             if (selectContainer.classList.contains('open')) {
+                 const selectedItem = document.querySelector('.dropdown-item.selected');
+                 if (selectedItem) {
+                    selectedItem.focus();
+                 }
+             }
+        });
+
+        // 6. Close dropdown if clicked outside
+        document.addEventListener('click', (event) => {
+            if (!selectContainer.contains(event.target)) {
+                selectContainer.classList.remove('open');
+                selectButton.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // 7. Adjust select box width to match title
+        function adjustSelectWidth() {
+            if (pageTitle.offsetWidth > 0) {
+                const titleWidth = pageTitle.offsetWidth;
+                document.documentElement.style.setProperty('--title-width', `${titleWidth}px`);
+            }
+        }
+
+        // 8. Initialization
+        function initializePage() {
+            populateDropdown();
+
+            // Default to the first pillar on load
+            selectPillar(0);
+
+            // Adjust width initially and on window resize
+            adjustSelectWidth();
+            window.addEventListener('resize', adjustSelectWidth);
+        }
+
+        document.addEventListener('DOMContentLoaded', initializePage);
+
+        // Mobile Menu Toggle Logic
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+    </script>
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 text-center text-gray-400">
+            <p>&copy; 2025 Klara AI. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Klara's Persona-Based Use Case Capabilities</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Global Styles from index.html snippet */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #030712; /* Very dark gray for a premium feel */
+            color: #E5E7EB; /* Lighter gray for main text */
+            line-height: 1.6;
+            padding-top: 100px; /* SAFE INCREASED SPACE for fixed header clearance */
+            margin: 0; /* Ensure no default body margin interferes */
+        }
+        /* Gradient Text Style */
+        .gradient-text {
+            background: linear-gradient(to right, #a855f7, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Card Style with Blur and Border */
+        .card {
+            background-color: rgba(17, 24, 39, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(55, 65, 81, 0.5);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            transition: opacity 0.4s ease-in-out; 
+            border-radius: 0.5rem; /* Ensure rounded corners on cards */
+        }
+
+        /* --- Combo Box (Custom Dropdown) Styling --- */
+        .select-container {
+            text-align: center;
+            position: relative; 
+            width: fit-content; 
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* Set the width to match the H1 title */
+        #selectContainer {
+            width: var(--title-width, 400px); /* Default width if JS hasn't run yet */
+            max-width: 100%;
+        }
+
+        /* The custom button */
+        .select-button {
+            background-color: #1f2937; /* Darker button background */
+            color: #e5e7eb;
+            border: 2px solid #6366f1; /* Primary color border */
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 600; 
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            width: 100%; 
+            justify-content: space-between; 
+            box-sizing: border-box; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            user-select: none;
+            text-align: left;
+        }
+
+        .select-button:hover {
+            border-color: #a855f7;
+        }
+        
+        /* Dropdown arrow icon */
+        .select-arrow {
+            font-size: 0.7em;
+            margin-left: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .select-container.open .select-arrow {
+            transform: rotate(180deg);
+        }
+
+        /* The Custom Dropdown Menu (The list of options) */
+        #customDropdown {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            position: absolute;
+            top: 100%; 
+            left: 0;
+            width: 100%; 
+            background-color: #111827; /* Very dark background for the list */
+            border: 1px solid #374151;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+            z-index: 20;
+            overflow: hidden;
+            
+            /* Smooth Transition Effect (start collapsed) */
+            max-height: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, visibility 0.3s;
+        }
+
+        .select-container.open #customDropdown {
+            max-height: 300px; 
+            opacity: 1;
+            visibility: visible;
+            overflow-y: auto;
+        }
+
+        .dropdown-item {
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 500;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            text-align: left;
+            color: #d1d5db; /* Light gray text */
+        }
+
+        .dropdown-item:hover {
+            background-color: #374151; /* Highlight on hover/focus */
+            color: #ffffff;
+        }
+        
+        /* Selected item styling */
+        .dropdown-item.selected {
+            background-color: #4f46e5; /* Primary purple/indigo */
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .dropdown-item.selected:hover {
+            background-color: #4f46e5; 
+            color: #ffffff;
+        }
+
+        /* Conclusion Card */
+        .conclusion-card {
+            background-color: #4f46e5; /* Indigo/Secondary Color */
+            color: white;
+        }
+
+        .conclusion-card h2 {
+            color: white; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5); 
+        }
+
+        .conclusion-card strong {
+            color: #D1D5DB; 
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 1.8em;
+            border-bottom: 2px solid #6366f1; /* Primary color line */
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        /* Custom Bullet Point Styling */
+        .card ul li {
+            position: relative;
+            padding-left: 20px; /* Space for the custom bullet */
+            list-style: none; /* Hide default bullets */
+            margin-bottom: 10px;
+        }
+
+        .card ul li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #a855f7; /* Purple bullet */
+            font-size: 1.2em;
+            font-weight: bold;
+            line-height: 1;
+        }
+        /* Mobile menu link styles */
+        #mobileMenu a {
+            border-radius: 0.5rem;
+            margin: 0.25rem 1rem;
+        }
+    </style>
+</head>
+<body class="">
+
+    <!-- Navigation Header -->
+    <header class="fixed top-0 left-0 w-full z-30 bg-gray-900/95 backdrop-blur-md shadow-lg border-b border-gray-700">
+        <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
+            <a href="index.html" class="text-2xl font-extrabold tracking-tight gradient-text mr-auto">Klara</a>
+            <div class="hidden lg:flex flex-1 justify-end">
+                <div class="flex items-center space-x-6">
+                    <a href="index.html#features" class="text-gray-300 hover:text-purple-400 transition duration-150">Features</a>
+                    <a href="index.html#for-who" class="text-gray-300 hover:text-purple-400 transition duration-150">For Who?</a>
+                    <a href="index.html#advantage" class="text-gray-300 hover:text-purple-400 transition duration-150">Advantage</a>
+                    <a href="pricing.html" class="text-gray-300 hover:text-purple-400 transition duration-150">Pricing</a>
+                </div>
+            </div>
+            <div class="flex items-center space-x-4 ml-8">
+                <a href="https://klara.augometa.com" class="hidden lg:inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-full transition duration-150 shadow-md shadow-indigo-500/50">
+                    Get Started
+                </a>
+                <div class="lg:hidden">
+                    <button id="mobileMenuButton" class="text-gray-300 focus:outline-none p-2 rounded-lg hover:bg-gray-800">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobileMenu" class="hidden lg:hidden w-full bg-gray-900 border-t border-gray-700 pb-4">
+            <a href="index.html#features" class="block px-8 py-2 text-gray-300 hover:bg-gray-800 transition duration-150">Features</a>
+            <a href="index.html#for-who" class="block px-8 py-2 text-gray-300 hover:bg-gray-800 transition duration-150">For Who?</a>
+            <a href="index.html#advantage" class="block px-8 py-2 text-gray-300 hover:bg-gray-800 transition duration-150">Advantage</a>
+            <a href="pricing.html" class="block px-8 py-2 text-gray-300 hover:bg-gray-800 transition duration-150">Pricing</a>
+            <a href="https://klara.augometa.com" class="block px-8 py-2 mt-2 mx-4 text-white bg-indigo-600 hover:bg-indigo-700 rounded-full text-center">
+                Get Started
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content Container with new padding for desktop/mobile consistency -->
+    <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
+        <h1 id="pageTitle" class="text-3xl md:text-5xl font-extrabold tracking-tight mb-8">
+            <span class="gradient-text">Klara’s Persona-Based Use Case Capabilities</span>
+        </h1>
+
+        <div id="selectContainer" class="select-container mb-12">
+            
+            <button id="selectButton" class="select-button" aria-expanded="false">
+                <span id="selectedPersonaText">Select a Persona...</span> <span class="select-arrow">▼</span>
+            </button>
+
+            <ul id="customDropdown">
+                <!-- Dropdown items populated by JavaScript -->
+            </ul>
+        </div>
+
+        <!-- Content Area: Single column grid that stacks content naturally -->
+        <div id="contentArea" class="content-area grid grid-cols-1 gap-8">
+            <!-- Content dynamically rendered here -->
+        </div>
+    </div>
+
+    <script>
+        // Data Structure for the content (content kept AS-IS per user request)
+        const personaData = [
+            {
+                persona: "Individual - Knowledge Professional",
+                useCase: {
+                    title: "Centralised, Conversational Intelligence Hub",
+                    body: `
+                        <p>The modern knowledge professional, like a consultant, is penalised by information sprawl—research papers, archived case studies, successful pitch decks, and internal templates scattered across multiple cloud drives and legacy systems. Valuable time is wasted hunting, not thinking.</p>
+                        <p>Klara solves this by creating a secure, centralised, and instantly queryable intelligence hub for all professional documents. This eliminates the need to hunt, providing a single source for foundational knowledge. Furthermore, Klara's ability to remember conversational context and adapt content generation to the user's stylistic preferences allows the professional to not just find information, but to instantly synthesise and build new, tailored materials. The system also enables granular, secure sharing, transforming individual expertise into a managed, collective asset.</p>
+                    `,
+                },
+                benefit: {
+                    title: "Focus on High-Value Impact",
+                    body: "By centralising their entire body of work and making it conversationally accessible, Klara radically shifts the professional's time allocation away from administrative searching toward strategic client engagement.",
+                    list: [
+                        "<strong>20% Time Savings on Research & Drafting:</strong> Eliminate wasted time spent searching across platforms. Klara's instant synthesis and tailored content generation allows for the creation of new materials (e.g., first drafts of client memos or pitch sections) in a fraction of the traditional time.",
+                        "<strong>Context-Aware Content Quality:</strong> Ensure the consistency and quality of all output. Klara generates new content that is grounded in the professional's best past work and adapted to their preferred tone and format, ensuring a high-quality starting point every time while ensuring adherence to the firm’s accepted style and compliance guidelines.",
+                        "<strong>Collective Asset Amplification:</strong> Move beyond solo work. Secure, collaborative features ensure that the professional can build upon insights and preferred responses from their entire team or firm, leveraging a constantly evolving intelligence base to outcompete."
+                    ],
+                },
+                conclusion: "The ultimate outcome is accelerated project delivery, higher quality output, and more time focused on billable, client-facing activities.",
+            },
+            {
+                persona: "Customer Support - Agent",
+                useCase: {
+                    title: "Instant, Grounded Co-Pilot for Ticket Resolution",
+                    body: `
+                        <p>Customer Support Agents currently spend a significant portion of their time (often 20−40% of a ticket's duration) manually searching and synthesising information from disparate sources: product documentation, SOPs, FAQs, and archived ticket histories. This delay frustrates customers and increases operational costs.</p>
+                        <p>Klara acts as an intelligent co-pilot by unifying all this data into a single, comprehensive source of truth. Instead of sifting through documents, an agent can simply ask a question, describe a complex problem, or paste a user's error log directly into Klara. Klara instantly provides a synthesised, actionable answer, grounded and referenced in all available, approved internal data.</p>
+                    `,
+                },
+                benefit: {
+                    title: "Accelerated Proficiency and Lower AHT",
+                    body: "Klara dramatically improves the efficiency and effectiveness of the support team, directly impacting key operational metrics.",
+                    list: [
+                        "<strong>40% Reduction in Onboarding Time:</strong> New agents gain immediate, intelligent access to the collective knowledge base, accelerating time-to-competence and full productivity.",
+                        "<strong>Minutes off AHT (Average Handle Time):</strong> By eliminating time-consuming information searches, Klara significantly speeds up ticket resolution. Agents receive direct answers, not links, allowing them to focus on active, empathetic problem-solving and customer communication.",
+                        "<strong>Improved CSAT and NPS:</strong> Faster, more accurate answers lead to better First Contact Resolution (FCR) rates and a higher-quality customer experience, strengthening Customer Satisfaction (CSAT) and Net Promoter Score (NPS)."
+                    ],
+                },
+                conclusion: "The outcome is a support team that is more efficient, better informed, and consistently delivers superior service with every interaction.",
+            },
+            {
+                persona: "Customer Support - End User Self-Service",
+                useCase: {
+                    title: "Immediate, Natural Language Troubleshooting",
+                    body: `
+                        <p>End users are often frustrated by traditional self-service methods: navigating dense, complex product documentation, relying on clunky keyword searches, or trying to find a needle in a haystack of FAQs. This friction leads to unnecessary support tickets and poor user experience.</p>
+                        <p>Klara empowers end-users to find answers and troubleshoot issues 24/7 without the need to contact an agent. Users can describe their problem in natural language (e.g., "My API call is failing with error 404 on the login endpoint"). Klara instantly provides a synthesised, easy-to-understand answer drawn securely from the company's internal knowledge base, including manuals, proven solutions, and historical support data.</p>
+                    `,
+                },
+                benefit: {
+                    title: "Cost Deflection and Enhanced Customer Independence",
+                    body: "This powerful, intelligent self-service capability provides immediate value for both the business and the customer by making information instantly accessible.",
+                    list: [
+                        "<strong>35%−50% Ticket Deflection:</strong> Klara acts as the first line of defence, significantly answering user questions instantly and accurately. This directly lowers operational costs by preventing tickets from ever reaching a live agent.",
+                        "<strong>Instant Gratification:</strong> Users receive immediate, bespoke answers that resolve their issues, eliminating the wait times and frustration associated with contacting human support or navigating static documentation.",
+                        "<strong>Increased User Loyalty:</strong> By providing a modern, independent, and seamless experience, Klara enhances the overall customer journey, fostering greater user independence and strengthening loyalty."
+                    ],
+                },
+                conclusion: "The result is a more efficient business operation and a superior, low-friction experience for the customer.",
+            },
+            {
+                persona: "Website Visitor - Customer Experience",
+                useCase: {
+                    title: "Dynamic, Conversational Information Access",
+                    body: `
+                        <p>Most enterprise websites rely on static pages, complex navigation, or robotic, rule-based chatbots that frustrate visitors with canned responses and time wasted hunting for information.</p>
+                        <p>Klara can be deployed as a next-generation chat assistant, transforming the static website into a dynamic, conversational information source. Grounded securely in all the company’s approved content—data sheets, marketing collateral, blog posts, and technical specifications—Klara enables visitors to ask complex questions in natural language and receive direct, intelligent, and personalised answers instantly. Klara effectively acts as a 24/7 information specialist, guiding the visitor quickly to the exact product or solution details they need.</p>
+                    `,
+                },
+                benefit: {
+                    title: "Enhanced Digital Experience and Engagement",
+                    body: "By delivering instant, customised information, Klara eliminates the friction of traditional digital experiences and significantly improves brand interaction.",
+                    list: [
+                        "<strong>Frictionless Information Retrieval:</strong> Eliminates the frustration of dealing with robotic chatbots or scrolling through pages. Visitors receive highly relevant, customised responses, ensuring they find what they're looking for immediately.",
+                        "<strong>Positive Brand Perception:</strong> Demonstrates a modern, client-centric approach by valuing the visitor's time and providing a sophisticated, personalised self-service experience.",
+                        "<strong>Increased Engagement:</strong> Visitors spend more quality time interacting with your product information because they can access it conversationally, leading to deeper understanding of your offerings and a more positive decision-making process."
+                    ],
+                },
+                conclusion: "The result is a superior digital experience that fosters greater trust, higher engagement, and stronger customer confidence in your brand.",
+            },
+            {
+                persona: "Sales - Conversational Proposal Presentation",
+                useCase: {
+                    title: "Interactive, Conversational Proposal Delivery",
+                    body: `
+                        <p>Traditionally, responding to a complex RFP means delivering a massive, static document (often hundreds of pages long) that clients must painstakingly read, manually compare, and internally circulate just to find specific answers. This friction slows down the buying cycle and diminishes the proposal's impact.</p>
+                        <p>Klara offers a revolutionary, interactive alternative. The salesperson simply grounds Klara in the final proposal document, creating a private, intelligent knowledge base. They then share a single, simple link with the client. The client is now empowered to interact with the proposal conversationally within a fully secured and managed access environment, requiring no training or special software, just a simple link, asking specific, nuanced questions ("What is your data security policy for non-EU data?" or "Show me the ROI data for a similar-sized company in our sector?") and receiving direct, bespoke, grounded answers instantly.</p>
+                    `,
+                },
+                benefit: {
+                    title: "Unmatched Client Experience and Competitive Advantage",
+                    body: "This delivery method transforms the client's evaluation process, making your proposal the easiest to digest and compare.",
+                    list: [
+                        "<strong>10x Faster Evaluation:</strong> For the client, Klara eliminates the need to manually sift through hundreds of pages. It provides immediate access to specific information, significantly simplifying their evaluation process and saving their team valuable time.",
+                        "<strong>Stand-Out Differentiation:</strong> This interactive experience provides a powerful competitive advantage. It immediately demonstrates a modern, client-centric, and technologically savvy approach, making your proposal feel current and accessible compared to competitors' static PDFs.",
+                        "<strong>Proposal Impact Amplification:</strong> Klara ensures the client finds the right answers fast. This superior engagement strategy increases the proposal's visibility, ensures key selling points are not missed, and improves the probability of winning the deal."
+                    ],
+                },
+                conclusion: "The outcome is a client-facing interaction that redefines the proposal experience and speeds up the decision timeline in your favour.",
+            },
+            {
+                persona: "Sales - Proposal Response Professional",
+                useCase: {
+                    title: "Turbo-Charging RFP/RFI Responses",
+                    body: `
+                        <p>A Pre-Sales Professional faces constant pressure to deliver detailed, compelling, and accurate RFP/RFI responses under extreme time constraints. This typically involves a time-consuming, frustrating hunt across scattered resources—past proposals, technical specifications, case studies, and compliance documents—often leading to inconsistent or outdated answers.</p>
+                        <p>Klara transforms this by creating an intelligent Response Engine that unifies all these disparate assets. The team populates Klara with their best, compliant content. When an RFP question arrives, the professional simply asks Klara, and the system instantly provides a grounded, multi-paragraph answer with verifiable references to the exact source material (e.g., "Page 3 of the Q3 Security Audit Document").</p>
+                    `,
+                },
+                benefit: {
+                    title: "Win More Deals, Faster and Smarter",
+                    body: "Klara acts as a tireless, expert co-pilot, eliminating the non-productive time spent searching and verifying information.",
+                    list: [
+                        "<strong>70% Faster Response Cycle:</strong> Dramatically accelerate time-to-delivery by eliminating hours of manual research and drafting. This allows the team to focus on strategic proposal customisation, not foundational content assembly.",
+                        "<strong>Error-Free Consistency:</strong> Ensure every answer is consistent, compliant, and grounded in the latest approved source material, reducing the risk of errors that can disqualify a bid.",
+                        "<strong>Scalable Expertise:</strong> Instantly bring the knowledge of the most experienced Subject Matter Experts (SMEs) to every team member, ensuring the quality of every proposal is consistently high."
+                    ],
+                },
+                conclusion: "The direct result is higher quality proposals, delivered faster, providing a powerful competitive edge that directly translates to increased win rates.",
+            },
+            {
+                persona: "Legal - Solicitor Team (Small to Medium Practice)",
+                useCase: {
+                    title: "Secure, Precedent-Grounded Research",
+                    body: `
+                        <p>Small legal practices often dedicate substantial, non-billable hours to foundational research—finding similar case precedents, adapting court-approved templates, and drafting standard responses. This work relies on manually searching internal archives or expensive, third-party legal databases.</p>
+                        <p>Klara transforms this by creating a Secure Knowledge Vault, centralising the firm's most valuable assets: past case files, favourable judgments, proven legal templates, and internal practice guides. Instead of manual searching or reliance on expensive external databases, a solicitor can securely query the firm's own curated knowledge. Klara instantly provides a grounded response, citing the firm’s own successful precedents and approved internal language.</p>
+                    `,
+                },
+                benefit: {
+                    title: "Increased Profitability and Competitive Pricing",
+                    body: "Klara leverages the firm's collective experience to drastically improve efficiency, turning administrative time into billable hours and ensuring highly secure, consistent legal work.",
+                    list: [
+                        "<strong>20%+ Reduction in Non-Billable Research Time:</strong> Klara acts as an instant, internal expert, eliminating the time solicitors spend hunting for foundational information, allowing them to focus on high-value client strategy and billable activities.",
+                        "<strong>Consistency and Quality Assurance:</strong> All documentation is grounded in the firm’s own accepted templates, successful arguments, and compliance guides. This ensures higher quality, reduces errors, and standardises service delivery across the team.",
+                        "<strong>Cost Advantage:</strong> By replacing expensive, manual research and reliance on costly third-party subscriptions with a secure, internal intelligence tool, the firm lowers overhead and can competitively price its services."
+                    ],
+                },
+                conclusion: "The result is a significant competitive edge, enabling the practice to operate with higher profitability and superior efficiency.",
+            },
+        ];
+
+        const contentArea = document.getElementById('contentArea');
+        const selectButton = document.getElementById('selectButton');
+        const selectedPersonaText = document.getElementById('selectedPersonaText');
+        const customDropdown = document.getElementById('customDropdown');
+        const selectContainer = document.getElementById('selectContainer');
+        const pageTitle = document.getElementById('pageTitle');
+        let selectedIndex = 0; // Tracks the currently selected persona index
+
+        // 1. Populate the custom dropdown list
+        function populateDropdown() {
+            customDropdown.innerHTML = '';
+            personaData.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.classList.add('dropdown-item');
+                li.textContent = item.persona;
+                li.dataset.index = index;
+                li.tabIndex = 0; 
+                
+                li.addEventListener('click', () => {
+                    selectPersona(index);
+                    selectContainer.classList.remove('open');
+                });
+                
+                li.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        selectPersona(index);
+                        selectContainer.classList.remove('open');
+                        selectButton.focus();
+                    }
+                });
+
+                customDropdown.appendChild(li);
+            });
+        }
+
+        // 2. Select a persona and update content
+        function selectPersona(index) {
+            selectedIndex = index;
+            renderContent(index);
+            updateSelectedStyle(index);
+        }
+
+        // 3. Update the visual style of the selected item in the dropdown list
+        function updateSelectedStyle(index) {
+            document.querySelectorAll('.dropdown-item').forEach(item => {
+                item.classList.remove('selected');
+                item.setAttribute('aria-selected', 'false');
+            });
+            const selectedItem = document.querySelector(`.dropdown-item[data-index="${index}"]`);
+            if (selectedItem) {
+                selectedItem.classList.add('selected');
+                selectedItem.setAttribute('aria-selected', 'true');
+            }
+        }
+
+        // 4. Render the content for a selected persona
+        function renderContent(index) {
+            const data = personaData[index];
+            
+            // Start fade out effect
+            contentArea.style.opacity = 0;
+
+            setTimeout(() => {
+                if (!data) return;
+
+                selectedPersonaText.textContent = data.persona;
+
+                // Use the 1-based index (index + 1) for the image file name
+                const imageFileName = (index + 1) + '-usecase.jpg';
+                // Placeholder image URL
+                const placeholderUrl = `https://placehold.co/800x400/a855f7/ffffff?text=${encodeURIComponent(data.persona)}`;
+
+                // Card for the Use Case description
+                const useCaseHTML = `
+                    <div class="card p-8 use-case-card">
+                        <h2 class="gradient-text font-bold text-2xl">${data.useCase.title}</h2>
+                        <div class="text-gray-300">${data.useCase.body}</div>
+                    </div>
+                `;
+                
+                // Card for the Image, now immediately following the Use Case card
+                // Placeholder text removed here as requested.
+                const imageHTML = `
+                    <div class="card p-6 persona-image-container">
+                        <img src="${imageFileName}" onerror="this.onerror=null; this.src='${placeholderUrl}'" 
+                            alt="Image representing the ${data.persona} persona" 
+                            class="persona-image w-full h-auto rounded-lg"
+                        >
+                    </div>
+                `;
+                // List items for Benefit section
+                const benefitListHTML = data.benefit.list.map(item => `<li>${item}</li>`).join('');
+                
+                // Card for the Benefit section
+                const benefitHTML = `
+                    <div class="card p-8 benefit-card">
+                        <h2 class="gradient-text font-bold text-2xl">${data.benefit.title}</h2>
+                        <p class="text-gray-300">${data.benefit.body}</p>
+                        <ul class="text-gray-300 pt-2">${benefitListHTML}</ul>
+                    </div>
+                `;
+                
+                // Card for the Conclusion section.
+                const conclusionHTML = `
+                    <div class="card conclusion-card p-8 col-span-full">
+                        <h2 class="font-bold text-2xl">Conclusion</h2>
+                        <p class="text-gray-100"><strong>${data.conclusion}</strong></p>
+                    </div>
+                `;
+
+                // Render content in the requested stacked order: Use Case -> Image -> Benefit -> Conclusion
+                contentArea.innerHTML = `
+                    ${useCaseHTML}
+                    ${imageHTML}
+                    ${benefitHTML}
+                    ${conclusionHTML}
+                `;
+
+                // End fade in effect
+                contentArea.style.opacity = 1;
+
+            }, 400); 
+        }
+
+        // 5. Toggle dropdown visibility
+        selectButton.addEventListener('click', () => {
+             const isOpen = selectContainer.classList.toggle('open');
+             selectButton.setAttribute('aria-expanded', isOpen);
+
+             if (isOpen) {
+                 const selectedItem = document.querySelector('.dropdown-item.selected');
+                 if (selectedItem) {
+                    selectedItem.focus();
+                 }
+             }
+        });
+
+        // 6. Close dropdown if clicked outside
+        document.addEventListener('click', (event) => {
+            if (!selectContainer.contains(event.target)) {
+                selectContainer.classList.remove('open');
+                selectButton.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // 7. Keyboard navigation (up/down arrows in dropdown)
+        selectButton.addEventListener('keydown', (e) => {
+            const isOpen = selectContainer.classList.contains('open');
+
+            if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (!isOpen) {
+                    selectContainer.classList.add('open');
+                    selectButton.setAttribute('aria-expanded', 'true');
+                }
+                const selectedItem = document.querySelector('.dropdown-item.selected') || customDropdown.querySelector('.dropdown-item');
+                if (selectedItem) {
+                    selectedItem.focus();
+                }
+            }
+        });
+        
+        customDropdown.addEventListener('keydown', (e) => {
+            const items = Array.from(customDropdown.querySelectorAll('.dropdown-item'));
+            const focusedIndex = items.findIndex(item => item === document.activeElement);
+            let nextIndex = focusedIndex;
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                nextIndex = (focusedIndex < items.length - 1) ? focusedIndex + 1 : 0;
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                nextIndex = (focusedIndex > 0) ? focusedIndex - 1 : items.length - 1;
+            } else if (e.key === 'Escape') {
+                e.preventDefault();
+                selectContainer.classList.remove('open');
+                selectButton.setAttribute('aria-expanded', 'false');
+                selectButton.focus();
+                return;
+            }
+            
+            if (nextIndex !== focusedIndex && nextIndex !== -1) {
+                items[nextIndex].focus();
+            }
+        });
+
+        // 8. Adjust select box width to match title
+        function adjustSelectWidth() {
+            if (pageTitle.offsetWidth > 0) {
+                const titleWidth = pageTitle.offsetWidth; 
+                document.documentElement.style.setProperty('--title-width', `${titleWidth}px`);
+            }
+        }
+
+        // 9. Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+
+        // 10. Initialization
+        function initializePage() {
+            populateDropdown();
+
+            // Select a random index for pre-selection
+            const randomIndex = Math.floor(Math.random() * personaData.length);
+            
+            selectPersona(randomIndex);
+
+            // Adjust width initially and on window resize
+            adjustSelectWidth();
+            window.addEventListener('resize', adjustSelectWidth);
+        }
+
+        document.addEventListener('DOMContentLoaded', initializePage);
+
+    </script>
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 text-center text-gray-400">
+            <p>&copy; 2025 Klara AI. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
