@@ -109,7 +109,7 @@
                 </p>
                 <!-- START: MOVED BUTTON HERE as requested (under Meet Klara:...) -->
                 <div class="mt-8">
-                    <a href="#"
+                    <a href="#" id="chatButton"
                         class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition-transform duration-300 hover:scale-105 shadow-lg shadow-indigo-900/50">
                         Ask Klara about Klara!
                     </a>
@@ -433,6 +433,19 @@
             });
         }
 
+    </script>
+    <script src="https://klara-widget-935360170340.us-central1.run.app/chat-widget.js"></script>
+    <script>
+        const widget = new AIChatWidget({
+            url: 'https://klara-widget-935360170340.us-central1.run.app/corpus_mghuo3k8_dbyj4pkxy',
+            buttonColor: '#5307b0',
+            buttonSize: '50px',
+            logoColor: '#ffffff'
+        });
+
+        document.getElementById('chatButton').addEventListener('click', () => {
+            widget.togglePopup();
+        });
     </script>
 </body>
 
