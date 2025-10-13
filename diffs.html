@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,23 +11,30 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
+
     <style>
         /* Global Styles & Font Setup (Dark Theme) */
         :root {
             /* Keep neutrals, but adapt to dark theme */
-            --color-background: #030712; /* Very Dark Gray */
-            --color-text: #E5E7EB; /* Light Gray */
-            --color-light: #1F2937; /* Darker Card Background */
-            --color-card-bg: #111827; /* Even darker card background */
-            --color-selected-item: #374151; /* Darker gray for selected item/hover */
+            --color-background: #030712;
+            /* Very Dark Gray */
+            --color-text: #E5E7EB;
+            /* Light Gray */
+            --color-light: #1F2937;
+            /* Darker Card Background */
+            --color-card-bg: #111827;
+            /* Even darker card background */
+            --color-selected-item: #374151;
+            /* Darker gray for selected item/hover */
 
             /* Neutral/Default Brand Colors (Adapted for Dark BG) */
-            --color-brand-primary: #a855f7; /* Purple */
-            --color-brand-secondary: #6366f1; /* Indigo */
+            --color-brand-primary: #a855f7;
+            /* Purple */
+            --color-brand-secondary: #6366f1;
+            /* Indigo */
 
             --font-family: 'Inter', sans-serif;
-            
+
             /* Dynamic Theme Variables (will be set by JS/Class) */
             --color-theme-primary: var(--color-brand-primary);
             --color-theme-secondary: var(--color-brand-secondary);
@@ -35,18 +43,26 @@
         /* --- Theme Definitions (Violet, Orange, Teak) --- */
         /* Theme 1: Violet (Dark adapted) */
         .pillar-theme-1 {
-            --color-theme-primary: #8D6EC8; /* Light Violet */
-            --color-theme-secondary: #5C33A8; /* Deep Violet */
+            --color-theme-primary: #8D6EC8;
+            /* Light Violet */
+            --color-theme-secondary: #5C33A8;
+            /* Deep Violet */
         }
+
         /* Theme 2: Orange/Coral (Dark adapted) */
         .pillar-theme-2 {
-            --color-theme-primary: #F08C8A; /* Light Orange/Red */
-            --color-theme-secondary: #D9534F; /* Rust/Coral */
+            --color-theme-primary: #F08C8A;
+            /* Light Orange/Red */
+            --color-theme-secondary: #D9534F;
+            /* Rust/Coral */
         }
+
         /* Theme 3: Teak (Dark adapted) */
         .pillar-theme-3 {
-            --color-theme-primary: #C7AD8E; /* Light Teak */
-            --color-theme-secondary: #A3835B; /* Teak/Brown */
+            --color-theme-primary: #C7AD8E;
+            /* Light Teak */
+            --color-theme-secondary: #A3835B;
+            /* Teak/Brown */
         }
 
 
@@ -57,7 +73,7 @@
             margin: 0;
             /* Added padding for fixed header */
             padding-top: 100px;
-            padding-bottom: 40px; 
+            padding-bottom: 40px;
             line-height: 1.6;
             min-height: 100vh;
         }
@@ -68,7 +84,7 @@
             margin-bottom: 30px;
             /* Styles applied via Tailwind classes in HTML */
         }
-        
+
         .gradient-text {
             background: linear-gradient(to right, #a855f7, #6366f1);
             -webkit-background-clip: text;
@@ -80,45 +96,49 @@
         .select-container {
             text-align: center;
             margin-bottom: 40px;
-            position: relative; 
-            width: fit-content; 
+            position: relative;
+            width: fit-content;
             margin-left: auto;
             margin-right: auto;
-            z-index: 10; /* Ensure dropdown is above content */
+            z-index: 10;
+            /* Ensure dropdown is above content */
         }
 
         /* Set the width to match the H1 title */
         #selectContainer {
-            width: var(--title-width, 400px); 
+            width: var(--title-width, 400px);
             max-width: 100%;
         }
 
         /* The custom button */
         .select-button {
-            background-color: var(--color-light); /* Darker gray background */
+            background-color: var(--color-light);
+            /* Darker gray background */
             color: var(--color-text);
-            border: 2px solid var(--color-brand-secondary); /* Primary brand color border */
+            border: 2px solid var(--color-brand-secondary);
+            /* Primary brand color border */
             padding: 12px 25px;
             border-radius: 8px;
             cursor: pointer;
             font-size: 1.1em;
-            font-weight: 500; 
+            font-weight: 500;
             transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
             display: flex;
             align-items: center;
-            width: 100%; 
-            justify-content: space-between; 
-            box-sizing: border-box; 
+            width: 100%;
+            justify-content: space-between;
+            box-sizing: border-box;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
             user-select: none;
             text-align: left;
         }
 
         .select-button:hover {
-            border-color: var(--color-brand-primary); /* Hover color change */
+            border-color: var(--color-brand-primary);
+            /* Hover color change */
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
         }
-        
+
         /* Dropdown arrow icon */
         .select-arrow {
             font-size: 0.7em;
@@ -136,10 +156,11 @@
             padding: 0;
             margin: 0;
             position: absolute;
-            top: 100%; 
+            top: 100%;
             left: 0;
-            width: 100%; 
-            background-color: var(--color-card-bg); /* Very dark background */
+            width: 100%;
+            background-color: var(--color-card-bg);
+            /* Very dark background */
             border: 1px solid var(--color-selected-item);
             border-top: none;
             border-radius: 0 0 8px 8px;
@@ -147,7 +168,7 @@
             z-index: 20;
             overflow: hidden;
             color: var(--color-text);
-            
+
             /* Smooth Transition Effect (start collapsed) */
             max-height: 0;
             opacity: 0;
@@ -156,7 +177,7 @@
         }
 
         .select-container.open #customDropdown {
-            max-height: 300px; 
+            max-height: 300px;
             opacity: 1;
             visibility: visible;
             overflow-y: auto;
@@ -175,16 +196,16 @@
             background-color: var(--color-selected-item);
             color: var(--color-light);
         }
-        
+
         /* Selected item styling */
         .dropdown-item.selected {
-            background-color: var(--color-brand-secondary); 
+            background-color: var(--color-brand-secondary);
             color: var(--color-light);
             font-weight: 600;
         }
 
         .dropdown-item.selected:hover {
-            background-color: var(--color-brand-secondary); 
+            background-color: var(--color-brand-secondary);
             color: var(--color-light);
         }
 
@@ -192,28 +213,33 @@
         /* --- Main Content Area --- */
         .content-area {
             display: grid;
-            gap: 24px; /* Slightly larger gap with Tailwind's feel */
-            transition: opacity 0.4s ease-in-out; 
-            grid-template-columns: 1fr; 
+            gap: 24px;
+            /* Slightly larger gap with Tailwind's feel */
+            transition: opacity 0.4s ease-in-out;
+            grid-template-columns: 1fr;
         }
 
         /* Card Styles */
         .card {
-            background-color: var(--color-card-bg); /* Dark background */
+            background-color: var(--color-card-bg);
+            /* Dark background */
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(55, 65, 81, 0.5); /* Subtle border */
+            border: 1px solid rgba(55, 65, 81, 0.5);
+            /* Subtle border */
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        
+
         /* Main title for the pillar content */
         .pillar-main-title h2 {
             margin-top: 0;
             font-size: 2.5em;
             font-weight: 800;
-            color: var(--color-theme-primary); /* Uses Theme Primary Color */
-            border-bottom: 3px solid var(--color-theme-secondary); /* Uses Theme Secondary Color */
+            color: var(--color-theme-primary);
+            /* Uses Theme Primary Color */
+            border-bottom: 3px solid var(--color-theme-secondary);
+            /* Uses Theme Secondary Color */
             padding-bottom: 12px;
             margin-bottom: 8px;
         }
@@ -223,20 +249,24 @@
             margin-top: 0;
             font-size: 1.75em;
             font-weight: 700;
-            color: var(--color-theme-primary); /* Uses Theme Primary Color */
-            border-bottom: 2px solid var(--color-theme-secondary); /* Uses Theme Secondary Color */
+            color: var(--color-theme-primary);
+            /* Uses Theme Primary Color */
+            border-bottom: 2px solid var(--color-theme-secondary);
+            /* Uses Theme Secondary Color */
             padding-bottom: 5px;
             margin-bottom: 15px;
         }
-        
-        .card p, .card ul {
+
+        .card p,
+        .card ul {
             margin-bottom: 15px;
             text-align: left;
-            color: #D1D5DB; /* Lighter text for content */
+            color: #D1D5DB;
+            /* Lighter text for content */
         }
-        
+
         /* Ensure paragraph breaks in content */
-        .pillar-section-card p + p {
+        .pillar-section-card p+p {
             margin-top: 1em;
         }
 
@@ -257,11 +287,12 @@
             content: '✓';
             position: absolute;
             left: 0;
-            color: var(--color-theme-secondary); /* Uses Theme Secondary Color */
+            color: var(--color-theme-secondary);
+            /* Uses Theme Secondary Color */
             font-size: 1.3em;
             font-weight: bold;
         }
-        
+
         /* --- Image Styling --- */
         .pillar-image-container {
             text-align: center;
@@ -284,7 +315,8 @@
         .pillar-main-title p {
             font-size: 1.25em;
             font-weight: 500;
-            color: #9CA3AF; /* Gray text for subtitle */
+            color: #9CA3AF;
+            /* Gray text for subtitle */
             margin-top: 0;
         }
 
@@ -297,14 +329,16 @@
         /* Media Queries for Responsiveness */
         @media (max-width: 900px) {
             #selectContainer {
-                width: 90%; 
+                width: 90%;
             }
+
             h1#pageTitle {
                 font-size: 2.2em;
             }
         }
     </style>
 </head>
+
 <body>
 
     <!-- Navigation Header (Fixed and Dark) -->
@@ -313,31 +347,49 @@
             <a href="index.html" class="text-2xl font-extrabold tracking-tight gradient-text mr-auto">Klara</a>
             <div class="hidden lg:flex flex-1 justify-end">
                 <div class="flex items-center space-x-6">
-                    <a href="index.html#features" class="text-gray-300 hover:text-purple-400 transition duration-150">Features</a>
-                    <a href="index.html#for-who" class="text-gray-300 hover:text-purple-400 transition duration-150">For Who?</a>
-                    <a href="index.html#advantage" class="text-gray-300 hover:text-purple-400 transition duration-150">Advantage</a>
-                    <a href="pricing.html" class="text-gray-300 hover:text-purple-400 transition duration-150">Pricing</a>
+                    <a href="index.html#features"
+                        class="text-gray-300 hover:text-purple-400 transition duration-150">Features</a>
+                    <a href="index.html#for-who" class="text-gray-300 hover:text-purple-400 transition duration-150">For
+                        Who?</a>
+                    <a href="index.html#advantage"
+                        class="text-gray-300 hover:text-purple-400 transition duration-150">Advantage</a>
+                    <a href="pricing.html"
+                        class="text-gray-300 hover:text-purple-400 transition duration-150">Pricing</a>
                 </div>
             </div>
             <div class="flex items-center space-x-4 ml-8">
-                <a href="https://klara.augometa.com" class="hidden lg:inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-full transition duration-150 shadow-md shadow-indigo-500/50">
+                <a href="https://klara.augometa.com"
+                    class="hidden lg:inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-full transition duration-150 shadow-md shadow-indigo-500/50">
                     Get Started
                 </a>
                 <div class="lg:hidden">
-                    <button id="mobileMenuButton" class="text-gray-300 focus:outline-none p-2 rounded-lg hover:bg-gray-800">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    <button id="mobileMenuButton"
+                        class="text-gray-300 focus:outline-none p-2 rounded-lg hover:bg-gray-800">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
                     </button>
                 </div>
             </div>
         </nav>
         <!-- Mobile Menu Dropdown -->
         <div id="mobileMenu" class="hidden lg:hidden w-full bg-gray-900 border-t border-gray-700 pb-4">
-            <a href="index.html" class="block px-8 py-2 text-gray-300 hover:bg-gray-800 transition duration-150">Features</a>
-            <a href="index.html" class="block px-8 py-2 text-gray-300 hover:bg-gray-800 transition duration-150">For Who?</a>
-            <a href="differentiations.html" class="block px-8 py-2 text-purple-400 bg-gray-800 font-semibold">Advantage</a> <!-- Only on this page -->
-            <a href="pricing.html" class="block px-8 py-2 text-gray-300 hover:bg-gray-800 transition duration-150">Pricing</a>
-            <a href="#" class="block px-8 py-2 mt-2 mx-4 text-white bg-indigo-600 hover:bg-indigo-700 rounded-full text-center">Get Started</a>
-            <a href="https://klara.augometa.com" class="block px-8 py-2 mt-2 mx-4 text-white bg-indigo-600 hover:bg-indigo-700 rounded-full text-center">
+            <a href="index.html"
+                class="block px-8 py-2 text-gray-300 hover:bg-gray-800 transition duration-150">Features</a>
+            <a href="index.html" class="block px-8 py-2 text-gray-300 hover:bg-gray-800 transition duration-150">For
+                Who?</a>
+            <a href="differentiations.html"
+                class="block px-8 py-2 text-purple-400 bg-gray-800 font-semibold">Advantage</a>
+            <!-- Only on this page -->
+            <a href="pricing.html"
+                class="block px-8 py-2 text-gray-300 hover:bg-gray-800 transition duration-150">Pricing</a>
+            <a href="#"
+                class="block px-8 py-2 mt-2 mx-4 text-white bg-indigo-600 hover:bg-indigo-700 rounded-full text-center">Get
+                Started</a>
+            <a href="https://klara.augometa.com"
+                class="block px-8 py-2 mt-2 mx-4 text-white bg-indigo-600 hover:bg-indigo-700 rounded-full text-center">
                 Get Started
             </a>
         </div>
@@ -345,14 +397,14 @@
 
     <!-- Main Content -->
     <div class="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        
+
         <h1 id="pageTitle" class="text-3xl md:text-5xl font-extrabold tracking-tight mb-8 text-center">
             <!-- Renamed page title to reflect new navigation label (Advantage) while keeping Klara's Differentiation theme -->
             <span class="gradient-text">Klara's Key Advantage</span>
         </h1>
 
         <div id="selectContainer" class="select-container">
-            
+
             <!-- Custom Button -->
             <button id="selectButton" class="select-button" aria-expanded="false">
                 <span id="selectedPillarText">Select a Pillar...</span> <span class="select-arrow">▼</span>
@@ -449,7 +501,7 @@
         const customDropdown = document.getElementById('customDropdown');
         const selectContainer = document.getElementById('selectContainer');
         const pageTitle = document.getElementById('pageTitle');
-        let selectedIndex = 0; 
+        let selectedIndex = 0;
 
         // 1. Populate the custom dropdown list
         function populateDropdown() {
@@ -458,15 +510,15 @@
                 const li = document.createElement('li');
                 li.classList.add('dropdown-item');
                 // Use the descriptive title for the dropdown text
-                li.textContent = item.title; 
+                li.textContent = item.title;
                 li.dataset.index = index;
-                li.tabIndex = 0; 
-                
+                li.tabIndex = 0;
+
                 li.addEventListener('click', () => {
                     selectPillar(index);
                     selectContainer.classList.remove('open');
                 });
-                
+
                 li.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter') {
                         selectPillar(index);
@@ -500,14 +552,14 @@
         // 4. Render the content for a selected pillar
         function renderContent(index) {
             const data = pillarData[index];
-            
+
             // Determine theme class (1, 2, or 3)
             const themeClass = `pillar-theme-${(index % 3) + 1}`;
-            
+
             // Apply theme class to the content area
             contentArea.classList.remove('pillar-theme-1', 'pillar-theme-2', 'pillar-theme-3');
             contentArea.classList.add(themeClass);
-            
+
             contentArea.style.opacity = 0;
 
             setTimeout(() => {
@@ -518,7 +570,7 @@
                 // Image HTML (placed directly after the main content card)
                 const imageHTML = `
                     <div class="pillar-image-container">
-                        <img src="${data.image}" alt="Image representing ${data.title}" class="pillar-image" onerror="this.onerror=null; this.src='https://placehold.co/800x200/cccccc/333333?text=Image+${index+1}+Missing'">
+                        <img src="${data.image}" alt="Image representing ${data.title}" class="pillar-image" onerror="this.onerror=null; this.src='https://placehold.co/800x200/cccccc/333333?text=Image+${index + 1}+Missing'">
                     </div>
                 `;
 
@@ -555,20 +607,20 @@
 
                 contentArea.style.opacity = 1;
 
-            }, 400); 
+            }, 400);
         }
 
         // 5. Toggle dropdown visibility
         selectButton.addEventListener('click', () => {
-             selectContainer.classList.toggle('open');
-             selectButton.setAttribute('aria-expanded', selectContainer.classList.contains('open'));
+            selectContainer.classList.toggle('open');
+            selectButton.setAttribute('aria-expanded', selectContainer.classList.contains('open'));
 
-             if (selectContainer.classList.contains('open')) {
-                 const selectedItem = document.querySelector('.dropdown-item.selected');
-                 if (selectedItem) {
+            if (selectContainer.classList.contains('open')) {
+                const selectedItem = document.querySelector('.dropdown-item.selected');
+                if (selectedItem) {
                     selectedItem.focus();
-                 }
-             }
+                }
+            }
         });
 
         // 6. Close dropdown if clicked outside
@@ -618,4 +670,5 @@
         </div>
     </footer>
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,59 +15,69 @@
         /* Global Styles from index.html snippet */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #030712; /* Very dark gray for a premium feel */
-            color: #E5E7EB; /* Lighter gray for main text */
+            background-color: #030712;
+            /* Very dark gray for a premium feel */
+            color: #E5E7EB;
+            /* Lighter gray for main text */
             line-height: 1.6;
-            padding-top: 100px; /* SAFE INCREASED SPACE for fixed header clearance */
-            margin: 0; /* Ensure no default body margin interferes */
+            padding-top: 100px;
+            /* SAFE INCREASED SPACE for fixed header clearance */
+            margin: 0;
+            /* Ensure no default body margin interferes */
         }
+
         /* Gradient Text Style */
         .gradient-text {
             background: linear-gradient(to right, #a855f7, #6366f1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
         /* Card Style with Blur and Border */
         .card {
             background-color: rgba(17, 24, 39, 0.8);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(55, 65, 81, 0.5);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-            transition: opacity 0.4s ease-in-out; 
-            border-radius: 0.5rem; /* Ensure rounded corners on cards */
+            transition: opacity 0.4s ease-in-out;
+            border-radius: 0.5rem;
+            /* Ensure rounded corners on cards */
         }
 
         /* --- Combo Box (Custom Dropdown) Styling --- */
         .select-container {
             text-align: center;
-            position: relative; 
-            width: fit-content; 
+            position: relative;
+            width: fit-content;
             margin-left: auto;
             margin-right: auto;
         }
-        
+
         /* Set the width to match the H1 title */
         #selectContainer {
-            width: var(--title-width, 400px); /* Default width if JS hasn't run yet */
+            width: var(--title-width, 400px);
+            /* Default width if JS hasn't run yet */
             max-width: 100%;
         }
 
         /* The custom button */
         .select-button {
-            background-color: #1f2937; /* Darker button background */
+            background-color: #1f2937;
+            /* Darker button background */
             color: #e5e7eb;
-            border: 2px solid #6366f1; /* Primary color border */
+            border: 2px solid #6366f1;
+            /* Primary color border */
             padding: 12px 25px;
             border-radius: 8px;
             cursor: pointer;
             font-size: 1.1em;
-            font-weight: 600; 
+            font-weight: 600;
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
-            width: 100%; 
-            justify-content: space-between; 
-            box-sizing: border-box; 
+            width: 100%;
+            justify-content: space-between;
+            box-sizing: border-box;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             user-select: none;
             text-align: left;
@@ -75,7 +86,7 @@
         .select-button:hover {
             border-color: #a855f7;
         }
-        
+
         /* Dropdown arrow icon */
         .select-arrow {
             font-size: 0.7em;
@@ -93,17 +104,18 @@
             padding: 0;
             margin: 0;
             position: absolute;
-            top: 100%; 
+            top: 100%;
             left: 0;
-            width: 100%; 
-            background-color: #111827; /* Very dark background for the list */
+            width: 100%;
+            background-color: #111827;
+            /* Very dark background for the list */
             border: 1px solid #374151;
             border-top: none;
             border-radius: 0 0 8px 8px;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
             z-index: 20;
             overflow: hidden;
-            
+
             /* Smooth Transition Effect (start collapsed) */
             max-height: 0;
             opacity: 0;
@@ -112,7 +124,7 @@
         }
 
         .select-container.open #customDropdown {
-            max-height: 300px; 
+            max-height: 300px;
             opacity: 1;
             visibility: visible;
             overflow-y: auto;
@@ -125,54 +137,61 @@
             font-weight: 500;
             transition: background-color 0.2s ease, color 0.2s ease;
             text-align: left;
-            color: #d1d5db; /* Light gray text */
+            color: #d1d5db;
+            /* Light gray text */
         }
 
         .dropdown-item:hover {
-            background-color: #374151; /* Highlight on hover/focus */
+            background-color: #374151;
+            /* Highlight on hover/focus */
             color: #ffffff;
         }
-        
+
         /* Selected item styling */
         .dropdown-item.selected {
-            background-color: #4f46e5; /* Primary purple/indigo */
+            background-color: #4f46e5;
+            /* Primary purple/indigo */
             color: #ffffff;
             font-weight: 600;
         }
 
         .dropdown-item.selected:hover {
-            background-color: #4f46e5; 
+            background-color: #4f46e5;
             color: #ffffff;
         }
 
         /* Conclusion Card */
         .conclusion-card {
-            background-color: #4f46e5; /* Indigo/Secondary Color */
+            background-color: #4f46e5;
+            /* Indigo/Secondary Color */
             color: white;
         }
 
         .conclusion-card h2 {
-            color: white; 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.5); 
+            color: white;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
         }
 
         .conclusion-card strong {
-            color: #D1D5DB; 
+            color: #D1D5DB;
         }
 
         .card h2 {
             margin-top: 0;
             font-size: 1.8em;
-            border-bottom: 2px solid #6366f1; /* Primary color line */
+            border-bottom: 2px solid #6366f1;
+            /* Primary color line */
             padding-bottom: 10px;
             margin-bottom: 20px;
         }
-        
+
         /* Custom Bullet Point Styling */
         .card ul li {
             position: relative;
-            padding-left: 20px; /* Space for the custom bullet */
-            list-style: none; /* Hide default bullets */
+            padding-left: 20px;
+            /* Space for the custom bullet */
+            list-style: none;
+            /* Hide default bullets */
             margin-bottom: 10px;
         }
 
@@ -180,11 +199,13 @@
             content: '•';
             position: absolute;
             left: 0;
-            color: #a855f7; /* Purple bullet */
+            color: #a855f7;
+            /* Purple bullet */
             font-size: 1.2em;
             font-weight: bold;
             line-height: 1;
         }
+
         /* Mobile menu link styles */
         #mobileMenu a {
             border-radius: 0.5rem;
@@ -192,6 +213,7 @@
         }
     </style>
 </head>
+
 <body class="">
 
     <!-- Navigation Header -->
@@ -200,30 +222,45 @@
             <a href="index.html" class="text-2xl font-extrabold tracking-tight gradient-text mr-auto">Klara</a>
             <div class="hidden lg:flex flex-1 justify-end">
                 <div class="flex items-center space-x-6">
-                    <a href="index.html#features" class="text-gray-300 hover:text-purple-400 transition duration-150">Features</a>
-                    <a href="index.html#for-who" class="text-gray-300 hover:text-purple-400 transition duration-150">For Who?</a>
-                    <a href="index.html#advantage" class="text-gray-300 hover:text-purple-400 transition duration-150">Advantage</a>
-                    <a href="pricing.html" class="text-gray-300 hover:text-purple-400 transition duration-150">Pricing</a>
+                    <a href="index.html#features"
+                        class="text-gray-300 hover:text-purple-400 transition duration-150">Features</a>
+                    <a href="index.html#for-who" class="text-gray-300 hover:text-purple-400 transition duration-150">For
+                        Who?</a>
+                    <a href="index.html#advantage"
+                        class="text-gray-300 hover:text-purple-400 transition duration-150">Advantage</a>
+                    <a href="pricing.html"
+                        class="text-gray-300 hover:text-purple-400 transition duration-150">Pricing</a>
                 </div>
             </div>
             <div class="flex items-center space-x-4 ml-8">
-                <a href="https://klara.augometa.com" class="hidden lg:inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-full transition duration-150 shadow-md shadow-indigo-500/50">
+                <a href="https://klara.augometa.com"
+                    class="hidden lg:inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-full transition duration-150 shadow-md shadow-indigo-500/50">
                     Get Started
                 </a>
                 <div class="lg:hidden">
-                    <button id="mobileMenuButton" class="text-gray-300 focus:outline-none p-2 rounded-lg hover:bg-gray-800">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    <button id="mobileMenuButton"
+                        class="text-gray-300 focus:outline-none p-2 rounded-lg hover:bg-gray-800">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
                     </button>
                 </div>
             </div>
         </nav>
         <!-- Mobile Menu Dropdown -->
         <div id="mobileMenu" class="hidden lg:hidden w-full bg-gray-900 border-t border-gray-700 pb-4">
-            <a href="index.html#features" class="block px-8 py-2 text-gray-300 hover:bg-gray-800 transition duration-150">Features</a>
-            <a href="index.html#for-who" class="block px-8 py-2 text-gray-300 hover:bg-gray-800 transition duration-150">For Who?</a>
-            <a href="index.html#advantage" class="block px-8 py-2 text-gray-300 hover:bg-gray-800 transition duration-150">Advantage</a>
-            <a href="pricing.html" class="block px-8 py-2 text-gray-300 hover:bg-gray-800 transition duration-150">Pricing</a>
-            <a href="https://klara.augometa.com" class="block px-8 py-2 mt-2 mx-4 text-white bg-indigo-600 hover:bg-indigo-700 rounded-full text-center">
+            <a href="index.html#features"
+                class="block px-8 py-2 text-gray-300 hover:bg-gray-800 transition duration-150">Features</a>
+            <a href="index.html#for-who"
+                class="block px-8 py-2 text-gray-300 hover:bg-gray-800 transition duration-150">For Who?</a>
+            <a href="index.html#advantage"
+                class="block px-8 py-2 text-gray-300 hover:bg-gray-800 transition duration-150">Advantage</a>
+            <a href="pricing.html"
+                class="block px-8 py-2 text-gray-300 hover:bg-gray-800 transition duration-150">Pricing</a>
+            <a href="https://klara.augometa.com"
+                class="block px-8 py-2 mt-2 mx-4 text-white bg-indigo-600 hover:bg-indigo-700 rounded-full text-center">
                 Get Started
             </a>
         </div>
@@ -236,7 +273,7 @@
         </h1>
 
         <div id="selectContainer" class="select-container mb-12">
-            
+
             <button id="selectButton" class="select-button" aria-expanded="false">
                 <span id="selectedPersonaText">Select a Persona...</span> <span class="select-arrow">▼</span>
             </button>
@@ -413,13 +450,13 @@
                 li.classList.add('dropdown-item');
                 li.textContent = item.persona;
                 li.dataset.index = index;
-                li.tabIndex = 0; 
-                
+                li.tabIndex = 0;
+
                 li.addEventListener('click', () => {
                     selectPersona(index);
                     selectContainer.classList.remove('open');
                 });
-                
+
                 li.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
                         selectPersona(index);
@@ -455,7 +492,7 @@
         // 4. Render the content for a selected persona
         function renderContent(index) {
             const data = personaData[index];
-            
+
             // Start fade out effect
             contentArea.style.opacity = 0;
 
@@ -476,7 +513,7 @@
                         <div class="text-gray-300">${data.useCase.body}</div>
                     </div>
                 `;
-                
+
                 // Card for the Image, now immediately following the Use Case card
                 // Placeholder text removed here as requested.
                 const imageHTML = `
@@ -489,7 +526,7 @@
                 `;
                 // List items for Benefit section
                 const benefitListHTML = data.benefit.list.map(item => `<li>${item}</li>`).join('');
-                
+
                 // Card for the Benefit section
                 const benefitHTML = `
                     <div class="card p-8 benefit-card">
@@ -498,7 +535,7 @@
                         <ul class="text-gray-300 pt-2">${benefitListHTML}</ul>
                     </div>
                 `;
-                
+
                 // Card for the Conclusion section.
                 const conclusionHTML = `
                     <div class="card conclusion-card p-8 col-span-full">
@@ -518,20 +555,20 @@
                 // End fade in effect
                 contentArea.style.opacity = 1;
 
-            }, 400); 
+            }, 400);
         }
 
         // 5. Toggle dropdown visibility
         selectButton.addEventListener('click', () => {
-             const isOpen = selectContainer.classList.toggle('open');
-             selectButton.setAttribute('aria-expanded', isOpen);
+            const isOpen = selectContainer.classList.toggle('open');
+            selectButton.setAttribute('aria-expanded', isOpen);
 
-             if (isOpen) {
-                 const selectedItem = document.querySelector('.dropdown-item.selected');
-                 if (selectedItem) {
+            if (isOpen) {
+                const selectedItem = document.querySelector('.dropdown-item.selected');
+                if (selectedItem) {
                     selectedItem.focus();
-                 }
-             }
+                }
+            }
         });
 
         // 6. Close dropdown if clicked outside
@@ -558,7 +595,7 @@
                 }
             }
         });
-        
+
         customDropdown.addEventListener('keydown', (e) => {
             const items = Array.from(customDropdown.querySelectorAll('.dropdown-item'));
             const focusedIndex = items.findIndex(item => item === document.activeElement);
@@ -577,7 +614,7 @@
                 selectButton.focus();
                 return;
             }
-            
+
             if (nextIndex !== focusedIndex && nextIndex !== -1) {
                 items[nextIndex].focus();
             }
@@ -586,7 +623,7 @@
         // 8. Adjust select box width to match title
         function adjustSelectWidth() {
             if (pageTitle.offsetWidth > 0) {
-                const titleWidth = pageTitle.offsetWidth; 
+                const titleWidth = pageTitle.offsetWidth;
                 document.documentElement.style.setProperty('--title-width', `${titleWidth}px`);
             }
         }
@@ -608,7 +645,7 @@
 
             // Select a random index for pre-selection
             const randomIndex = Math.floor(Math.random() * personaData.length);
-            
+
             selectPersona(randomIndex);
 
             // Adjust width initially and on window resize
@@ -626,4 +663,5 @@
         </div>
     </footer>
 </body>
+
 </html>
